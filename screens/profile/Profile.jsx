@@ -1,11 +1,14 @@
 import { View, Text, TouchableWithoutFeedback } from "react-native";
 import React from "react";
-import { Input } from "@rneui/base";
+import { Input } from "@rneui/themed";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { Ionicons } from "@expo/vector-icons";
 import { COLORS, SIZES } from "../../constants/theme";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useAuth } from "../../context/AuthContext";
+import { Button } from "react-native-paper";
 const Profile = () => {
+  const {setAuthState } = useAuth();
   return (
     <SafeAreaView>
       <View>
@@ -101,6 +104,12 @@ const Profile = () => {
             />
           </View>
         </TouchableWithoutFeedback>
+
+
+        <Button  mode="contained" onPress={() => setAuthState(  {token: '',
+        authenticated: false,})}>
+    Logout
+  </Button>
       </View>
     </SafeAreaView>
   );

@@ -1,14 +1,15 @@
 import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
-import { Onboarding, Search, CountryDetail } from "./screens";
-import { createStackNavigator } from "@react-navigation/stack";
+import { Onboarding, Search, CountryDetail, Login, Register } from "./screens";
 import { useFonts } from "expo-font";
 import { useCallback } from "react";
 import BottomTabNavigation from "./navigation/BottomTabNavigation";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { AuthProvider, useAuth } from "./context/AuthContext";
 
-const Stack = createStackNavigator();
+const Stack = createNativeStackNavigator();
 
 export default function App() {
   const [loaded, error] = useFonts({
@@ -32,35 +33,60 @@ export default function App() {
   }
 
   return (
-    <SafeAreaProvider>
-      <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen
-            name="Onboard"
-            options={{ headerShown: false }}
-            component={Onboarding}
-          />
-          <Stack.Screen
-            name="Bottom"
-            options={{ headerShown: false }}
-            component={BottomTabNavigation}
-          />
-          <Stack.Screen
-            name="Search"
-            options={{ headerShown: false }}
-            component={Search}
-          />
-          <Stack.Screen
-            name="CountryDetail"
-            options={{ headerShown: false }}
-            component={CountryDetail}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </SafeAreaProvider>
+    <AuthProvider>
+      <SafeAreaProvider>
+        <Layout />
+      </SafeAreaProvider>
+    </AuthProvider>
   );
 }
-
+export const Layout = () => {
+  const { authState } = useAuth();
+  console.log(authState);
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        {authState.authenticated ? (
+          <>
+            <Stack.Screen
+              name="Onboard"
+              options={{ headerShown: false }}
+              component={Onboarding}
+            />
+            <Stack.Screen
+              name="Bottom"
+              options={{ headerShown: false }}
+              component={BottomTabNavigation}
+            />
+            <Stack.Screen
+              name="Search"
+              options={{ headerShown: false }}
+              component={Search}
+            />
+            <Stack.Screen
+              name="CountryDetail"
+              options={{ headerShown: false }}
+              component={CountryDetail}
+            />
+          </>
+        ) : (
+          <>
+            <Stack.Screen
+              name="Login"
+              options={{ headerShown: false }}
+              component={Login}
+            />
+            <Stack.Screen
+              name="Register"
+              options={{ headerShown: false }}
+              component={Register}
+            />
+          </>
+        )}
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+};
 const styles = StyleSheet.create({
   container: {
     flex: 1,
