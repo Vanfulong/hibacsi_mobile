@@ -7,8 +7,12 @@ import { SIZES, COLORS } from "../../constants/theme";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import styles from "./Home.style";
 import SearchButton from "../../components/home/SearchButton";
+import { useAuth } from "../../context/AuthContext";
 const Home = ({ navigation }) => {
+  const { currentUser } = useAuth();
+  
   return (
+    <>
     <SafeAreaView style={reusable.container}>
       <View>
         <HeightSpacer height={SIZES.small} />
@@ -37,7 +41,7 @@ const Home = ({ navigation }) => {
             </TouchableOpacity>
           </View>
           <ReusableText
-            text={"Hi User"}
+            text={`Hi, ${currentUser.first_name}`}
             family={"medium"}
             size={SIZES.Large}
             color={COLORS.black}
@@ -78,6 +82,7 @@ const Home = ({ navigation }) => {
 
       </View>
     </SafeAreaView>
+    </>
   );
 };
 

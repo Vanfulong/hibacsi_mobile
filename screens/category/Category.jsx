@@ -1,12 +1,12 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 
-const Location = () => {
+const Category = () => {
   return (
     <View>
-      <Text>Location</Text>
+      <Text>Category</Text>
     </View>
   )
 }
 
-export default Location
+export default Category

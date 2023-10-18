@@ -1,8 +1,8 @@
-import { View, Text } from 'react-native'
+import { View } from 'react-native'
 import React from 'react'
-import { TouchableOpacity } from 'react-native'
-import { Button, SearchBar } from '@rneui/themed'
+import { Button } from '@rneui/themed'
 import { useNavigation } from '@react-navigation/native'
+import { COLORS } from '../../constants/theme'
 const SearchButton = () => {
   const navigation = useNavigation();
   return (
@@ -23,7 +23,7 @@ const SearchButton = () => {
           buttonStyle={{
             borderRadius:10,
             justifyContent: 'flex-start',
-            backgroundColor: 'white'
+            backgroundColor: COLORS.lightBlue
           }}
           onPress={()=>navigation.navigate('Search')}
         

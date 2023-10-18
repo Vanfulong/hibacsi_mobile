@@ -5,11 +5,11 @@ import { COLORS, SIZES } from "../../constants/theme";
 import { AntDesign } from "@expo/vector-icons";
 import ReusableText from "../reusable/ReusableText";
 import WitdhSpacer from "../reusable/WitdhSpacer";
-import { FontAwesome5 } from '@expo/vector-icons';
+import { FontAwesome5 } from "@expo/vector-icons";
 const CardDoctor = ({ doctor }) => {
   return (
     <View style={{ marginLeft: -12 }}>
-      <Card containerStyle={{ borderRadius: 10, width: 140 }}>
+      <Card containerStyle={{ borderRadius: 10, width: 140, padding:0, overflow:'hidden'}}>
         <View style={{ position: "relative" }}>
           <Card.Image
             style={styles.imageDoctor}
@@ -28,11 +28,21 @@ const CardDoctor = ({ doctor }) => {
             />
           </View>
         </View>
-        <View style={{flexDirection:'row', alignItems:'center', gap:4}}>
-        <FontAwesome5 name="briefcase-medical" size={12} color={COLORS.lightGrey} />
-        <Text style={{ textAlign: "left", color:COLORS.lightGrey }}>Khoa nhi</Text>
+        <View style={{backgroundColor:"#3b98eb", paddingHorizontal:10, paddingVertical:10,}}>
+          <View style={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
+            <FontAwesome5
+              name="briefcase-medical"
+              size={12}
+              color={COLORS.lightGrey}
+            />
+            <Text style={{ textAlign: "left", color: COLORS.lightGrey }}>
+              Khoa nhi
+            </Text>
+          </View>
+          <Text style={{ textAlign: "left", fontFamily: "medium", color:COLORS.white }}>
+            {doctor.name}
+          </Text>
         </View>
-        <Text style={{ textAlign: "left", fontFamily:'medium' }}>{doctor.name}</Text>
       </Card>
     </View>
   );

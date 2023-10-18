@@ -1,4 +1,4 @@
-import { View, Text, TouchableWithoutFeedback } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import React from "react";
 import { Input } from "@rneui/themed";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
@@ -6,113 +6,85 @@ import { Ionicons } from "@expo/vector-icons";
 import { COLORS, SIZES } from "../../constants/theme";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useAuth } from "../../context/AuthContext";
-import { Button } from "react-native-paper";
+import { Appbar, Avatar, Button, TextInput } from "react-native-paper";
+import reusable from "../../components/reusable/reusable.style";
+import { HeightSpacer } from "../../components";
 const Profile = () => {
-  const {setAuthState } = useAuth();
+  const { setAuthState } = useAuth();
   return (
-    <SafeAreaView>
-      <View>
-        <Input
-          containerStyle={{ marginBottom: -10 }}
-          disabledInputStyle={{}}
-          inputContainerStyle={{
-            borderWidth: 1,
-            borderRadius: 5,
-            paddingLeft: 10,
-            paddingRight: 10,
-            borderColor: COLORS.lightGrey,
-          }}
-          inputStyle={{}}
-          label="Họ và tên"
-          labelStyle={{ marginBottom: 4 }}
-          value="Van Phu Long"
-          leftIconContainerStyle={{}}
-          rightIcon={
-            <Icon name="close" size={20} onPress={() => console.log("first")} />
-          }
-          rightIconContainerStyle={{}}
-          placeholder="Enter Name"
-          leftIcon
-        />
-        <Input
-          containerStyle={{ marginBottom: -10, padding: 0 }}
-          disabledInputStyle={{}}
-          inputContainerStyle={{
-            borderWidth: 1,
-            borderRadius: 5,
-            paddingLeft: 10,
-            paddingRight: 10,
-            paddingTop: 0,
-            borderColor: COLORS.lightGrey,
-          }}
-          inputStyle={{ margin: 0 }}
-          label="So dien thoai"
-          labelStyle={{ marginBottom: 4 }}
-          value="935080640"
-          leftIconContainerStyle={{}}
-          leftIcon={
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                height: "100%",
-              }}
-            >
-              <Text style={{ fontSize: SIZES.medium }}>+84</Text>
-              <View
-                style={{
-                  width: 0,
-                  height: 20,
-                  marginLeft: 6,
-                  marginRight: 5,
-                  borderColor: COLORS.lightGrey,
-                  borderRightWidth: 1,
-                }}
-              />
-            </View>
-          }
-          rightIconContainerStyle={{}}
-          placeholder="Enter Name"
-        />
-        <TouchableWithoutFeedback
-          onPress={() => {
-            console.log("first");
-          }}
-        >
-          <View>
-            <Input
-              containerStyle={{}}
-              disabledInputStyle={{}}
-              inputContainerStyle={{
-                borderWidth: 1,
-                borderRadius: 5,
-                paddingLeft: 10,
-                paddingRight: 10,
-                borderColor: COLORS.lightGrey,
-              }}
-              inputStyle={{}}
-              label="Ngay sinh"
-              labelStyle={{ marginBottom: 4 }}
-              value="06/11/2002"
-              leftIconContainerStyle={{}}
-              rightIcon={
-                <Ionicons name="calendar" size={24} color={COLORS.blue} />
-              }
-              disabled
-              rightIconContainerStyle={{}}
-              placeholder="Enter Name"
-            />
-          </View>
-        </TouchableWithoutFeedback>
-
-
-        <Button  mode="contained" onPress={() => setAuthState(  {token: '',
-        authenticated: false,})}>
-    Logout
-  </Button>
+    <>
+      <Appbar.Header style={{ position: "absolute", zIndex:99, backgroundColor: 'transparent', marginTop:20}} statusBarHeight={0}>
+        <Appbar.BackAction onPress={() => {console.log('first')}} style={styles.backIcon} size={20} />
+        <Text style={styles.title}>Hồ sơ</Text>
+      </Appbar.Header>
+      <View style={styles.bannerProfile}>
+        <Avatar.Text size={80} label="XD" />
       </View>
-    </SafeAreaView>
+      <View style={reusable.container}>
+        <TextInput
+          style={styles.input}
+          label="Ho Va Ten"
+          returnKeyType="next"
+          value={"Van Phu Long"}
+          autoCapitalize="none"
+          underlineColor="transparent"
+          activeOutlineColor={COLORS.blue}
+          outlineColor={COLORS.lightGrey}
+          mode="outlined"
+        />
+        <TextInput
+          style={styles.input}
+          label="So dien thoai"
+          mode="outlined"
+          value="0935080640"
+          outlineColor={COLORS.lightGrey}
+          left={<TextInput.Affix text="+84" />}
+        />
+        <TextInput
+          style={styles.input}
+          label="Ngay sinh"
+          mode="outlined"
+          value="06/11/2002"
+          disabled
+          outlineColor={COLORS.lightGrey}
+          right={<TextInput.Icon icon={"calendar"} color={COLORS.blue} />}
+        />
+        <Button
+          style={{ marginVertical: 30 }}
+          mode="contained"
+          onPress={() => setAuthState({ token: "", authenticated: false })}
+        >
+          Logout
+        </Button>
+      </View>
+    </>
   );
 };
 
 export default Profile;
+
+const styles = StyleSheet.create({
+  input: {
+    marginVertical: 10,
+  },
+  bannerProfile: {
+    borderRadius: 30,
+    height: SIZES.height / 2.5,
+    backgroundColor: COLORS.blue,
+    width: SIZES.width,
+    marginBottom: 40,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  title:{
+    color: COLORS.white,
+    fontSize: SIZES.large,
+    fontFamily: 'medium'
+  },
+  backIcon:{
+    backgroundColor: COLORS.white,
+    borderRadius:10,
+    marginLeft:20,
+    marginRight:10
+  }
+});

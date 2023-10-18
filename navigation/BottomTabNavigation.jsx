@@ -1,7 +1,7 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import {Home,Chat,Profile,Location} from '../screens'
+import {Home,Chat,Profile,Category} from '../screens'
 import {Ionicons} from '@expo/vector-icons'
 import { COLORS } from '../constants/theme'
 const Tab = createBottomTabNavigator()
@@ -33,7 +33,7 @@ const BottomTabNavigation = () => {
           />
         )
       }} />
-      <Tab.Screen name='Location' component={Location} options={{
+      <Tab.Screen name='Category' component={Category} options={{
         tabBarStyle:tabBarStyle,
         tabBarShowLabel: false,
         headerShown: false,
