@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "travel_app",
-    "slug": "travel_app",
+    "name": "hibacsi",
+    "slug": "hibacsi",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -11,6 +11,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    
     "assetBundlePatterns": [
       "**/*"
     ],
@@ -29,7 +30,7 @@
     },
     "extra": {
       "eas": {
-        "projectId": "3f5a39f9-c9b5-4a74-97ef-cf5e1a588547"
+        "projectId": "54b507bc-457e-4ab2-af5a-e0ab637021e1"
       }
     }
   }

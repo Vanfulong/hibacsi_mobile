@@ -12,15 +12,15 @@ import { HeightSpacer } from "../../components";
 const Profile = () => {
   const { setAuthState } = useAuth();
   return (
-    <>
-      <Appbar.Header style={{ position: "absolute", zIndex:99, backgroundColor: 'transparent', marginTop:20}} statusBarHeight={0}>
+    <View style={styles.container}>
+      {/* <Appbar.Header style={{ position: "absolute", zIndex:99, backgroundColor: 'transparent', marginTop:20}} statusBarHeight={0}>
         <Appbar.BackAction onPress={() => {console.log('first')}} style={styles.backIcon} size={20} />
         <Text style={styles.title}>Hồ sơ</Text>
-      </Appbar.Header>
+      </Appbar.Header> */}
       <View style={styles.bannerProfile}>
         <Avatar.Text size={80} label="XD" />
       </View>
-      <View style={reusable.container}>
+      <View style={styles.containerBody}>
         <TextInput
           style={styles.input}
           label="Ho Va Ten"
@@ -57,7 +57,7 @@ const Profile = () => {
           Logout
         </Button>
       </View>
-    </>
+    </View>
   );
 };
 
@@ -72,9 +72,17 @@ const styles = StyleSheet.create({
     height: SIZES.height / 2.5,
     backgroundColor: COLORS.blue,
     width: SIZES.width,
-    marginBottom: 40,
+    // marginBottom: 40,
     justifyContent: "center",
     alignItems: "center",
+    
+  },
+  container: {
+    backgroundColor: 'white',
+    height:'100%'
+  },
+  containerBody:{
+    paddingHorizontal:20
   },
   title:{
     color: COLORS.white,

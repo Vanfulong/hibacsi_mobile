@@ -1,49 +1,75 @@
 import { StyleSheet, View } from "react-native";
 import React from "react";
-import { Text, Card, Button, Icon } from "@rneui/themed";
 import { COLORS, SIZES } from "../../constants/theme";
-import { AntDesign } from "@expo/vector-icons";
-import ReusableText from "../reusable/ReusableText";
-import WitdhSpacer from "../reusable/WitdhSpacer";
-import { FontAwesome5 } from "@expo/vector-icons";
+import { FontAwesome5, Octicons } from "@expo/vector-icons";
+import { Image } from "react-native";
+import { Text } from "react-native";
+import { Button } from "react-native-paper";
+import { Rating, AirbnbRating } from 'react-native-ratings';
 const CardDoctor = ({ doctor }) => {
   return (
-    <View style={{ marginLeft: -12 }}>
-      <Card containerStyle={{ borderRadius: 10, width: 140, padding:0, overflow:'hidden'}}>
-        <View style={{ position: "relative" }}>
-          <Card.Image
+    <View style={styles.container}>
+      <View style={styles.containerBody}>
+        <View style={styles.containerImg}>
+          <Image
             style={styles.imageDoctor}
             source={{
               uri: doctor.image,
             }}
           />
-          <View style={styles.rating}>
-            <AntDesign name="star" size={15} color="#FBC334" />
-            <WitdhSpacer width={3} />
-            <ReusableText
-              text={"4.4"}
-              family={"bold"}
-              size={SIZES.small}
-              color={COLORS.black}
-            />
-          </View>
         </View>
-        <View style={{backgroundColor:"#3b98eb", paddingHorizontal:10, paddingVertical:10,}}>
+        <View>
+          <Text style={styles.title}>{doctor.name}</Text>
           <View style={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
             <FontAwesome5
               name="briefcase-medical"
               size={12}
-              color={COLORS.lightGrey}
+              color={COLORS.gray}
             />
-            <Text style={{ textAlign: "left", color: COLORS.lightGrey }}>
-              Khoa nhi
-            </Text>
+            <Text style={styles.content}>Khoa nhi</Text>
           </View>
-          <Text style={{ textAlign: "left", fontFamily: "medium", color:COLORS.white }}>
-            {doctor.name}
-          </Text>
+          <View style={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
+            <Octicons name="location" size={13} color={COLORS.gray} />
+
+            <Text style={styles.content}>Bệnh viện AAAAA</Text>
+          </View>
+          <View style={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
+            <FontAwesome5 name="money-bill" size={13} color={COLORS.blue} />
+
+            <Text style={styles.content}>500.000 đ</Text>
+          </View>
+          <View style={{flexDirection: "row", alignItems: "center" , gap:6}}>
+            
+          <Rating
+            type='star'
+            ratingCount={5}
+            imageSize={16}
+            readonly
+            startingValue={3.5}
+            
+          />
+          <Text style={{fontSize:13, fontFamily:'bold'}}>4.0</Text>
+          </View>
         </View>
-      </Card>
+      </View>
+      <Button
+        mode="contained"
+        style={{
+          backgroundColor: "#dbeafe",
+          borderRadius: 5,
+        }}
+        onPress={() => console.log("Pressed")}
+      >
+        <Text
+          style={{
+            color: COLORS.blue,
+            fontFamily: "bold",
+            fontSize: SIZES.xmedium,
+          }}
+        >
+          Đặt lịch hẹn
+        </Text>
+      </Button>
     </View>
   );
 };
@@ -51,24 +77,38 @@ const CardDoctor = ({ doctor }) => {
 export default CardDoctor;
 
 const styles = StyleSheet.create({
-  rating: {
-    position: "absolute",
-    flexDirection: "row",
-    width: 50,
-    height: 25,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "white",
+  container: {
     borderRadius: 14,
     bottom: 5,
     right: 0,
     borderColor: COLORS.lightGrey,
     borderWidth: 1,
+    width: "100%",
+    marginVertical: 10,
+    padding: 15,
+  },
+  containerBody: {
+    flexDirection: "row",
+    gap: 10,
+    marginBottom: 10,
   },
   imageDoctor: {
-    padding: 0,
     width: "100%",
-    height: 130,
-    resizeMode: "cover",
+    height: "100%",
+    objectFit: "contain",
+    borderRadius: 10,
+  },
+  containerImg: {
+    width: "30%",
+    height: 100,
+  },
+  title: {
+    fontFamily: "medium",
+    fontSize: SIZES.xmedium,
+  },
+  content: {
+    textAlign: "left",
+    color: COLORS.gray,
+    fontSize: 13,
   },
 });

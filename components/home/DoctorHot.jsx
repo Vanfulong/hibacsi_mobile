@@ -2,32 +2,41 @@ import { View, Text, VirtualizedList, FlatList } from "react-native";
 import React from "react";
 import CardDoctor from "../card/CardDoctor";
 import HeightSpacer from "../reusable/HeightSpacer";
-import { SIZES } from "../../constants/theme";
+import { COLORS, SHADOWS, SIZES } from "../../constants/theme";
+import ReusableText from "../reusable/ReusableText";
+import { Button, Card } from "react-native-paper";
+import { StyleSheet } from "react-native";
 const DoctorHot = () => {
   const doctorHot = [
     {
       id: 1,
-      name: "Long",
+      name: "Nguyễn Văn Aa",
       image:
-        "https://static.vecteezy.com/system/resources/previews/005/520/145/original/cartoon-drawing-of-a-doctor-vector.jpg",
+        "https://www.fvhospital.com/wp-content/uploads/2018/03/dr-vo-trieu-dat-2020.jpg",
     },
     {
       id: 2,
-      name: "Long",
+      name: "Nguyễn Văn Aa",
       image:
-        "https://static.vecteezy.com/system/resources/previews/005/520/145/original/cartoon-drawing-of-a-doctor-vector.jpg",
+        "https://www.fvhospital.com/wp-content/uploads/2018/03/dr-vo-trieu-dat-2020.jpg",
     },
     {
       id: 3,
-      name: "Long",
+      name: "Nguyễn Văn Aa",
       image:
-        "https://static.vecteezy.com/system/resources/previews/005/520/145/original/cartoon-drawing-of-a-doctor-vector.jpg",
+        "https://www.fvhospital.com/wp-content/uploads/2018/03/dr-vo-trieu-dat-2020.jpg",
     },
   ];
   return (
     <View>
-      <View>
-        <FlatList
+      <HeightSpacer height={SIZES.xLarge} />
+      <ReusableText
+        text={"Bác sĩ nổi bật"}
+        family={"bold"}
+        size={SIZES.medium}
+        color={COLORS.black}
+      />
+      {/* <FlatList
           data={doctorHot}
           keyExtractor={(item) => item.id}
           horizontal
@@ -40,10 +49,17 @@ const DoctorHot = () => {
             </View>
           )}
           style={{padding:0}}
-        />
-      </View>
+        /> */}
+      {doctorHot.map((doctor) => (
+        <View key={doctor.id} style={styles.container}>
+          <CardDoctor doctor={doctor} />
+        </View>
+      ))}
     </View>
   );
 };
 
 export default DoctorHot;
+const styles = StyleSheet.create({
+  
+});

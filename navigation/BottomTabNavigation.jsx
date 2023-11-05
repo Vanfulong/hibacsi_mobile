@@ -1,7 +1,7 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import {Home,Chat,Profile,Category} from '../screens'
+import {Home,Knowledge,Profile,Category} from '../screens'
 import {Ionicons} from '@expo/vector-icons'
 import { COLORS } from '../constants/theme'
 const Tab = createBottomTabNavigator()
@@ -45,7 +45,7 @@ const BottomTabNavigation = () => {
           />
         )
       }} />
-      <Tab.Screen name='Chat' component={Chat} options={{
+      <Tab.Screen name='knowledge' component={Knowledge} options={{
         tabBarStyle:tabBarStyle,
         tabBarShowLabel: false,
         headerShown: false,
