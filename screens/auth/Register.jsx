@@ -28,9 +28,11 @@ const Login = ({ navigation }) => {
     <SafeAreaView style={reusable.container}>
       <View style={styles.container}>
         <Formik
-          initialValues={{ email: "", password: "" }}
+          initialValues={{ username:"",email: "", password: "", rePassword: "" }}
           validationSchema={SignupSchema}
           onSubmit={(values) => console.log(values)}
+          validateOnChange={false}
+          validateOnBlur={false}
         >
           {({
             handleChange,
@@ -43,7 +45,7 @@ const Login = ({ navigation }) => {
             <View>
               <View>
                 <ReusableText
-                  text={"Dang Ki"}
+                  text={"Đăng kí"}
                   family={"bold"}
                   size={SIZES.xLarge}
                   color={COLORS.black}
@@ -51,6 +53,21 @@ const Login = ({ navigation }) => {
                 />
               </View>
               <HeightSpacer height={30} />
+              <View style={styles.containerInput}>
+                <TextInput
+                  label="Tên tài khoản"
+                  returnKeyType="next"
+                  value={values.username}
+                  onChangeText={handleChange("username")}
+                  error={!!errors.username}
+                  autoCapitalize="none"
+                  autoComplete="username"
+                  underlineColor="transparent"
+                  mode="outlined"
+                  activeOutlineColor={COLORS.blue}
+                />
+                <Text style={styles.errorMessage}>{errors.username}</Text>
+              </View>
               <View style={styles.containerInput}>
                 <TextInput
                   label="Email"
@@ -69,8 +86,8 @@ const Login = ({ navigation }) => {
               </View>
               <View style={styles.containerInput}>
                 <TextInput
-                  label="Password"
-                  returnKeyType="done"
+                  label="Mật khẩu"
+                  returnKeyType="next"
                   value={values.password}
                   onChangeText={handleChange("password")}
                   error={!!errors.password}
@@ -88,7 +105,27 @@ const Login = ({ navigation }) => {
                 />
                 <Text style={styles.errorMessage}>{errors.password}</Text>
               </View>
-
+              <View style={styles.containerInput}>
+                <TextInput
+                  label="Nhập lại mật khẩu"
+                  returnKeyType="done"
+                  value={values.rePassword}
+                  onChangeText={handleChange("rePassword")}
+                  error={!!errors.rePassword}
+                  secureTextEntry={secure}
+                  underlineColor="transparent"
+                  mode="outlined"
+                  right={
+                    <TextInput.Icon
+                      icon="eye"
+                      color={COLORS.blue}
+                      onPress={() => setSecure((prev) => !prev)}
+                    />
+                  }
+                  activeOutlineColor={COLORS.blue}
+                />
+                <Text style={styles.errorMessage}>{errors.rePassword}</Text>
+              </View>
               <HeightSpacer height={30} />
 
               <Button
@@ -96,16 +133,16 @@ const Login = ({ navigation }) => {
                 mode="contained"
                 onPress={handleSubmit}
               >
-                Press me
+                Đăng kí
               </Button>
             </View>
           )}
         </Formik>
         <HeightSpacer height={30}/>
         <View style={{flexDirection:'row', alignContent:'center', justifyContent:'center'}}>
-          <Text style={{}}>Da co tai khoan?</Text>
+          <Text style={{}}>Đã có tài khoản?</Text>
           <TouchableWithoutFeedback onPress={()=> navigation.navigate('Login')}>
-            <Text style={{marginLeft:10, color:COLORS.blue}}>Dang nhap</Text>
+            <Text style={{marginLeft:10, color:COLORS.blue}}>Đăng nhập</Text>
           </TouchableWithoutFeedback>
         </View>
       </View>
@@ -119,7 +156,7 @@ const styles = StyleSheet.create({
     height: SIZES.height,
   },
   containerInput: {
-    marginVertical: 10,
+    marginVertical: 3,
   },
   button: {
     paddingVertical: 5,
