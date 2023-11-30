@@ -6,7 +6,7 @@ import reusable from "../../components/reusable/reusable.style";
 import { useState } from "react";
 import { TextInput, Button } from "react-native-paper";
 import { useAuth } from "../../context/AuthContext";
-import { HeightSpacer, ReusableText } from "../../components";
+import { HeightSpacer, LoadingModal, ReusableText } from "../../components";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { TouchableWithoutFeedback } from "react-native";
@@ -20,15 +20,21 @@ const LoginSchema = Yup.object().shape({
 const Login = ({ navigation }) => {
   const { onLogin } = useAuth();
   const [secure, setSecure] = useState(true);
-
+  const [loading, setLoading] = useState(false)
   const handleLogin = async(values) => {
+    setLoading(true)
     const result = await onLogin(values.username, values.password)
     if(result.error){
+      setLoading(false)
       console.log("ERROR", result.msg)
     }
   };
   return (
     <SafeAreaView style={reusable.container}>
+      {
+        loading?<LoadingModal text={"Đăng nhập ..."}/>:''
+      }
+      
       <View style={styles.container}>
         <Formik
           initialValues={{ username: "", password: "" }}
@@ -69,6 +75,9 @@ const Login = ({ navigation }) => {
                   underlineColor="transparent"
                   mode="outlined"
                   activeOutlineColor={COLORS.blue}
+                  style={{
+                    backgroundColor:'white'
+                  }}
                 />
                 <Text style={styles.errorMessage}>{errors.username}</Text>
               </View>
@@ -91,6 +100,9 @@ const Login = ({ navigation }) => {
                     />
                   }
                   activeOutlineColor={COLORS.blue}
+                  style={{
+                    backgroundColor:'white'
+                  }}
                 />
                 <Text style={styles.errorMessage}>{errors.password}</Text>
               </View>

@@ -52,7 +52,7 @@ export const AuthProvider = ({ children }) => {
       });
       console.log("AuthContext login result:  ", result);
       setAuthState({
-        token: result.token,
+        token: result.access_token,
         refresh_token: result.refresh_token,
         authenticated: true,
       });
@@ -61,8 +61,8 @@ export const AuthProvider = ({ children }) => {
       axiosClients.defaults.headers.common[
         "Authorization"
       ] = `Bearer ${result.access_token}`;
-      await SecureStore.setItemAsync(TOKEN_KEY, result.access_token);
-      await SecureStore.setItemAsync(REFRESH_TOKEN_KEY, result.refresh_token);
+      await SecureStore.setItemAsync("TOKEN_KEY", result.access_token);
+      await SecureStore.setItemAsync("REFRESH_TOKEN_KEY", result.refresh_token);
 
       return result;
     } catch (error) {
@@ -77,9 +77,10 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = async () => {
-    await SecureStore.deleteItemAsync(TOKEN_KEY);
+    await SecureStore.deleteItemAsync("TOKEN_KEY");
+    await SecureStore.deleteItemAsync("REFRESH_TOKEN_KEY");
     axiosClients.defaults.headers.common["Authorization"] = "";
-    setAuthState({ token: null, authenticated: false });
+    setAuthState({ token: null, refresh_token:null,authenticated: false });
   };
   const value = {
     onRegister: register,

@@ -11,32 +11,32 @@ const Category = () => {
   const categorys = [
     {
       id: 1,
-      url: "https://www.satdl.com/uploads/product-category/15921324768095.png",
+      image: "https://www.satdl.com/uploads/product-category/15921324768095.png",
       name: "Chỉ số cân nặng",
     },
     {
       id: 2,
-      url: "https://www.satdl.com/uploads/product-category/15921324768095.png",
+      image: "https://www.satdl.com/uploads/product-category/15921324768095.png",
       name: "category",
     },
     {
       id: 3,
-      url: "https://www.satdl.com/uploads/product-category/15921324768095.png",
+      image: "https://www.satdl.com/uploads/product-category/15921324768095.png",
       name: "category",
     },
     {
       id: 4,
-      url: "https://www.satdl.com/uploads/product-category/15921324768095.png",
+      image: "https://www.satdl.com/uploads/product-category/15921324768095.png",
       name: "category",
     },
     {
       id: 5,
-      url: "https://www.satdl.com/uploads/product-category/15921324768095.png",
+      image: "https://www.satdl.com/uploads/product-category/15921324768095.png",
       name: "category",
     },
     {
       id: 6,
-      url: "https://www.satdl.com/uploads/product-category/15921324768095.png",
+      image: "https://www.satdl.com/uploads/product-category/15921324768095.png",
       name: "category",
     },
   ];
@@ -52,6 +52,7 @@ const Category = () => {
             size={SIZES.medium}
             color={COLORS.black}
           />
+          <HeightSpacer height={SIZES.small} />
           <View style={{flexDirection:'row', justifyContent:'space-between', flexWrap:'wrap'}}>
             {categorys.map((category) => (
              

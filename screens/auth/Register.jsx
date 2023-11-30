@@ -6,7 +6,7 @@ import reusable from "../../components/reusable/reusable.style";
 import { useState } from "react";
 import { TextInput, Button } from "react-native-paper";
 import { useAuth } from "../../context/AuthContext";
-import { HeightSpacer, ReusableText } from "../../components";
+import { HeightSpacer, LoadingModal, ReusableText } from "../../components";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { TouchableWithoutFeedback } from "react-native";
@@ -18,14 +18,23 @@ const SignupSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Required"),
 });
 const Login = ({ navigation }) => {
-  const { setAuthState } = useAuth();
+  const { onRegister } = useAuth();
   const [secure, setSecure] = useState(true);
+  const [loading, setLoading] = useState(false)
 
-  const handleLogin = () => {
-    setAuthState({ token: "", authenticated: true });
+  const handleRegister = () => {
+    // setAuthState({ token: "", authenticated: true });
+    setLoading(true)
+    // .....
+    setLoading(false)
+
+
   };
   return (
     <SafeAreaView style={reusable.container}>
+      {
+        loading?<LoadingModal/>:''
+      }
       <View style={styles.container}>
         <Formik
           initialValues={{ username:"",email: "", password: "", rePassword: "" }}
@@ -65,6 +74,9 @@ const Login = ({ navigation }) => {
                   underlineColor="transparent"
                   mode="outlined"
                   activeOutlineColor={COLORS.blue}
+                  style={{
+                    backgroundColor:'white'
+                  }}
                 />
                 <Text style={styles.errorMessage}>{errors.username}</Text>
               </View>
@@ -81,6 +93,9 @@ const Login = ({ navigation }) => {
                   underlineColor="transparent"
                   mode="outlined"
                   activeOutlineColor={COLORS.blue}
+                  style={{
+                    backgroundColor:'white'
+                  }}
                 />
                 <Text style={styles.errorMessage}>{errors.email}</Text>
               </View>
@@ -102,6 +117,9 @@ const Login = ({ navigation }) => {
                     />
                   }
                   activeOutlineColor={COLORS.blue}
+                  style={{
+                    backgroundColor:'white'
+                  }}
                 />
                 <Text style={styles.errorMessage}>{errors.password}</Text>
               </View>
@@ -123,6 +141,9 @@ const Login = ({ navigation }) => {
                     />
                   }
                   activeOutlineColor={COLORS.blue}
+                  style={{
+                    backgroundColor:'white'
+                  }}
                 />
                 <Text style={styles.errorMessage}>{errors.rePassword}</Text>
               </View>

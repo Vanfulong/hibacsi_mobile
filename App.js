@@ -2,12 +2,13 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
-import { Onboarding, Search, CountryDetail, Login, Register } from "./screens";
+import { Onboarding, Search, CountryDetail, Login, Register, DoctorDetail, ProfileDetail, Appointment, AppointmentHistory } from "./screens";
 import { useFonts } from "expo-font";
 import { useCallback } from "react";
 import BottomTabNavigation from "./navigation/BottomTabNavigation";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { AuthProvider, useAuth } from "./context/AuthContext";
+import { AppProvider } from "./context/AppContext";
 
 const Stack = createNativeStackNavigator();
 
@@ -34,9 +35,11 @@ export default function App() {
 
   return (
     <AuthProvider>
-      <SafeAreaProvider>
-        <Layout />
-      </SafeAreaProvider>
+      <AppProvider>
+        <SafeAreaProvider>
+          <Layout />
+        </SafeAreaProvider>
+      </AppProvider>
     </AuthProvider>
   );
 }
@@ -48,11 +51,6 @@ export const Layout = () => {
       <Stack.Navigator>
         {authState.authenticated ? (
           <>
-            <Stack.Screen
-              name="Onboard"
-              options={{ headerShown: false }}
-              component={Onboarding}
-            />
             <Stack.Screen
               name="Bottom"
               options={{ headerShown: false }}
@@ -68,6 +66,28 @@ export const Layout = () => {
               options={{ headerShown: false }}
               component={CountryDetail}
             />
+            <Stack.Screen
+              name="DoctorDetail"
+              options={{ headerShown: false}}
+              component={DoctorDetail}
+            />
+            <Stack.Screen
+            name="ProfileDetail"
+            options={{ headerShown: false}}
+            component={ProfileDetail}
+          />
+          <Stack.Screen
+            name="Appointment"
+            options={{ headerShown: false }}
+            component={Appointment}
+          />
+
+           <Stack.Screen
+            name="AppointmentHistory"
+            options={{ headerShown: false }}
+            component={AppointmentHistory}
+          />
+        
           </>
         ) : (
           <>

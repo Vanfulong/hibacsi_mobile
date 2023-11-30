@@ -2,15 +2,34 @@ import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import reusable from "../../components/reusable/reusable.style";
-import { HeightSpacer, ReusableText, WitdhSpacer, Category, DoctorHot } from "../../components/";
+import { HeightSpacer, ReusableText, WitdhSpacer, Category, DoctorHot, ModalChooseCity } from "../../components/";
 import { SIZES, COLORS } from "../../constants/theme";
-import { AntDesign, Ionicons } from "@expo/vector-icons";
+import { AntDesign, MaterialIcons } from "@expo/vector-icons";
 import styles from "./Home.style";
 import SearchButton from "../../components/home/SearchButton";
 import { useAuth } from "../../context/AuthContext";
+import { useApp } from "../../context/AppContext";
+import { useState } from "react";
+import { useEffect } from "react";
 const Home = ({ navigation }) => {
   const { currentUser } = useAuth();
-  
+  const {city} = useApp();
+
+  const [openModalChoseCity, setOpenModalChooseCity] = useState(false)
+
+  useEffect(()=>{
+    if(!city){
+      setOpenModalChooseCity(true);
+    }
+    console.log('test ', city)
+  })
+
+  const cityRaw = {
+    'HaNoi' : 'Hà Nội',
+    'HoChiMinh': 'Thành phố Hồ Chí Minh',
+    'DaNang' : 'Đà Nẵng'
+  }
+ 
   return (
     <>
     <SafeAreaView style={reusable.container}>
@@ -22,22 +41,22 @@ const Home = ({ navigation }) => {
        
           <View style={reusable.rowWidthSpace("space-between")}>
             <View>
-              <TouchableOpacity>
-                <View style={{ flexDirection: "row", alignItems: "flex-end" }}>
-                  <Ionicons name="location" size={20} color="#0859C59F" />
-                  <WitdhSpacer width={3}/>
+              <TouchableOpacity onPress={()=>setOpenModalChooseCity(true)}>
+                <View style={{ flexDirection: "row", alignItems: "center", justifyContent:'center'}}>
+                  <MaterialIcons name="location-on" size={18} color={COLORS.blue} />
+                  <WitdhSpacer width={6}/>
                   <ReusableText
-                    text={"Quảng Nam"}
+                    text={cityRaw[city]}
                     family={"bold"}
                     size={SIZES.Large}
                     color={COLORS.black}
                   />
                   <WitdhSpacer width={5} />
                   <AntDesign
-                    style={{ bottom: 1 }}
+                    style={{ top:2 }}
                     name="down"
-                    size={16}
-                    color="black"
+                    size={14}
+                    color={COLORS.gray}
                   />
                 </View>
               </TouchableOpacity>
@@ -76,6 +95,7 @@ const Home = ({ navigation }) => {
 
         </View>
       </ScrollView>
+      <ModalChooseCity modal={openModalChoseCity} setModal={setOpenModalChooseCity} />
     </SafeAreaView>
     </>
   );

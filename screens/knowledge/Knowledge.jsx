@@ -14,8 +14,8 @@ const Knowledge = () => {
     <SafeAreaView style={reusable.container}>
       <ScrollView nestedScrollEnabled showsVerticalScrollIndicator={false}>
         <View style={{ flexDirection: "row", gap: 8, alignItems: "center" }}>
-          <Ionicons name="newspaper-outline" size={18} color="black" />
-          <Text style={{ fontSize: SIZES.medium, fontFamily: "bold" }}>
+          <Ionicons name="newspaper-outline" size={18} color={COLORS.blue} />
+          <Text style={{ fontSize: SIZES.medium, fontFamily: "bold", color: COLORS.blue }}>
             Bài viết mới
           </Text>
         </View>
@@ -53,6 +53,7 @@ const Knowledge = () => {
               textColor={COLORS.blue}
               mode="outlined"
               onPress={() => console.log("Pressed")}
+              
             >
               Xem thêm...
             </Button>

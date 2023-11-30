@@ -1,32 +1,21 @@
 import { View, Text, VirtualizedList, FlatList } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import CardDoctor from "../card/CardDoctor";
 import HeightSpacer from "../reusable/HeightSpacer";
 import { COLORS, SHADOWS, SIZES } from "../../constants/theme";
 import ReusableText from "../reusable/ReusableText";
 import { Button, Card } from "react-native-paper";
 import { StyleSheet } from "react-native";
+import axiosClients from "../../helper/axiosClients";
 const DoctorHot = () => {
-  const doctorHot = [
-    {
-      id: 1,
-      name: "Nguyễn Văn Aa",
-      image:
-        "https://www.fvhospital.com/wp-content/uploads/2018/03/dr-vo-trieu-dat-2020.jpg",
-    },
-    {
-      id: 2,
-      name: "Nguyễn Văn Aa",
-      image:
-        "https://www.fvhospital.com/wp-content/uploads/2018/03/dr-vo-trieu-dat-2020.jpg",
-    },
-    {
-      id: 3,
-      name: "Nguyễn Văn Aa",
-      image:
-        "https://www.fvhospital.com/wp-content/uploads/2018/03/dr-vo-trieu-dat-2020.jpg",
-    },
-  ];
+  const [listDoctor, setListDoctor] = useState([]);
+  useEffect(()=>{
+    const getListDoctor = async ()=>{
+      const data = await axiosClients.get('/doctors/')
+      setListDoctor([...data.results])
+    }
+    getListDoctor();
+  }, [])
   return (
     <View>
       <HeightSpacer height={SIZES.xLarge} />
@@ -36,25 +25,14 @@ const DoctorHot = () => {
         size={SIZES.medium}
         color={COLORS.black}
       />
-      {/* <FlatList
-          data={doctorHot}
-          keyExtractor={(item) => item.id}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          // getItemCount={(data) => data.length}
-          // getItem={(data, index) => data[index]}
-          renderItem={({ item, index }) => (
-            <View>
-              <CardDoctor doctor={item} />
-            </View>
-          )}
-          style={{padding:0}}
-        /> */}
-      {doctorHot.map((doctor) => (
-        <View key={doctor.id} style={styles.container}>
-          <CardDoctor doctor={doctor} />
-        </View>
-      ))}
+      {
+        listDoctor.length==0?'':listDoctor.map((doctor) => (
+          <View key={doctor.id} style={styles.container}>
+            <CardDoctor doctor={doctor} />
+          </View>
+        ))
+      }
+      
     </View>
   );
 };

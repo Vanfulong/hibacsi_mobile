@@ -1,64 +1,90 @@
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, TouchableWithoutFeedback, View } from "react-native";
 import React from "react";
 import { COLORS, SIZES } from "../../constants/theme";
 import { FontAwesome5, Octicons } from "@expo/vector-icons";
 import { Image } from "react-native";
 import { Text } from "react-native";
 import { Button } from "react-native-paper";
-import { Rating, AirbnbRating } from 'react-native-ratings';
+import { Rating, AirbnbRating } from "react-native-ratings";
+import { useNavigation } from "@react-navigation/native";
 const CardDoctor = ({ doctor }) => {
+  
+  const navigation = useNavigation();
+  let specialties = ""
+  if(doctor.specialties.length > 1){
+    
+     specialties = doctor.specialties.map(function(specialty) {
+      return specialty.specialty.name;
+  }).join(', ')
+  }
+  else{
+    if(doctor.specialties.length == 1){
+      specialties = doctor.specialties[0].specialty.name
+    }else{
+      specialties = ''
+    }
+  }
   return (
     <View style={styles.container}>
-      <View style={styles.containerBody}>
-        <View style={styles.containerImg}>
-          <Image
-            style={styles.imageDoctor}
-            source={{
-              uri: doctor.image,
-            }}
-          />
-        </View>
-        <View>
-          <Text style={styles.title}>{doctor.name}</Text>
-          <View style={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
-            <FontAwesome5
-              name="briefcase-medical"
-              size={12}
-              color={COLORS.gray}
+      <TouchableWithoutFeedback onPress={() => navigation.navigate("DoctorDetail",{doctor})}>
+        <View style={styles.containerBody}>
+          <View style={styles.containerImg}>
+            <Image
+              style={styles.imageDoctor}
+              source={{
+                uri: "https://www.fvhospital.com/wp-content/uploads/2018/03/dr-vo-trieu-dat-2020.jpg",
+              }}
             />
-            <Text style={styles.content}>Khoa nhi</Text>
           </View>
-          <View style={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
-            <Octicons name="location" size={13} color={COLORS.gray} />
+          <View>
+            <Text style={styles.title}>{doctor.name}</Text>
+            <View
+              style={{ flexDirection: "row", alignItems: "center", gap: 4 }}
+            >
+              <FontAwesome5
+                name="briefcase-medical"
+                size={12}
+                color={COLORS.gray}
+              />
 
-            <Text style={styles.content}>Bệnh viện AAAAA</Text>
-          </View>
-          <View style={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
-            <FontAwesome5 name="money-bill" size={13} color={COLORS.blue} />
+              <Text style={styles.content}>{specialties}</Text>
+            </View>
+            <View
+              style={{ flexDirection: "row", alignItems: "center", gap: 4 }}
+            >
+              <Octicons name="location" size={13} color={COLORS.gray} />
 
-            <Text style={styles.content}>500.000 đ</Text>
-          </View>
-          <View style={{flexDirection: "row", alignItems: "center" , gap:6}}>
-            
-          <Rating
-            type='star'
-            ratingCount={5}
-            imageSize={16}
-            readonly
-            startingValue={3.5}
-            
-          />
-          <Text style={{fontSize:13, fontFamily:'bold'}}>4.0</Text>
+              <Text style={styles.content}>{doctor.hospital.name}</Text>
+            </View>
+            <View
+              style={{ flexDirection: "row", alignItems: "center", gap: 4 }}
+            >
+              <FontAwesome5 name="money-bill" size={13} color={COLORS.blue} />
+
+              <Text style={styles.content}>{doctor.price}</Text>
+            </View>
+            <View
+              style={{ flexDirection: "row", alignItems: "center", gap: 6 }}
+            >
+              <Rating
+                type="star"
+                ratingCount={5}
+                imageSize={16}
+                readonly
+                startingValue={doctor.rating}
+              />
+              <Text style={{ fontSize: 13, fontFamily: "bold" }}>{doctor.rating}</Text>
+            </View>
           </View>
         </View>
-      </View>
+      </TouchableWithoutFeedback>
       <Button
         mode="contained"
         style={{
           backgroundColor: "#dbeafe",
           borderRadius: 5,
         }}
-        onPress={() => console.log("Pressed")}
+        onPress={() => navigation.navigate("Appointment",{doctor})}
       >
         <Text
           style={{
