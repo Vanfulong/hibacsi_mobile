@@ -1,7 +1,7 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import {Home,Knowledge,Profile,Category} from '../screens'
+import {Home,Knowledge,Profile,Category, Chat} from '../screens'
 import {Ionicons} from '@expo/vector-icons'
 import { COLORS } from '../constants/theme'
 const Tab = createBottomTabNavigator()
@@ -10,6 +10,7 @@ const tabBarStyle = {
   height: 60,
   position: "absolute",
 }
+
 const BottomTabNavigation = () => {
   return (
     <Tab.Navigator
@@ -45,13 +46,13 @@ const BottomTabNavigation = () => {
           />
         )
       }} />
-      <Tab.Screen name='knowledge' component={Knowledge} options={{
+      <Tab.Screen name='knowledge' component={Chat} options={{
         tabBarStyle:tabBarStyle,
         tabBarShowLabel: false,
         headerShown: false,
         tabBarIcon: ({focused}) => (
           <Ionicons
-            name={focused? 'book':'book-outline'}
+            name={focused? 'chatbubble-ellipses':'chatbubble-ellipses-outline'}
             color={focused?COLORS.blue:COLORS.gray}
             size={26}
           />

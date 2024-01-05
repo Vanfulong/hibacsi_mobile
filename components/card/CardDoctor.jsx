@@ -1,5 +1,5 @@
 import { StyleSheet, TouchableWithoutFeedback, View } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { COLORS, SIZES } from "../../constants/theme";
 import { FontAwesome5, Octicons } from "@expo/vector-icons";
 import { Image } from "react-native";
@@ -9,6 +9,7 @@ import { Rating, AirbnbRating } from "react-native-ratings";
 import { useNavigation } from "@react-navigation/native";
 const CardDoctor = ({ doctor }) => {
   
+  const [image, setImage] = useState(doctor.account.avatar)
   const navigation = useNavigation();
   let specialties = ""
   if(doctor.specialties.length > 1){
@@ -24,6 +25,12 @@ const CardDoctor = ({ doctor }) => {
       specialties = ''
     }
   }
+  const handleImageErr = () => {
+    console.log("first");
+    setImage(
+      "https://www.fvhospital.com/wp-content/uploads/2018/03/dr-vo-trieu-dat-2020.jpg"
+    );
+  };
   return (
     <View style={styles.container}>
       <TouchableWithoutFeedback onPress={() => navigation.navigate("DoctorDetail",{doctor})}>
@@ -32,14 +39,15 @@ const CardDoctor = ({ doctor }) => {
             <Image
               style={styles.imageDoctor}
               source={{
-                uri: "https://www.fvhospital.com/wp-content/uploads/2018/03/dr-vo-trieu-dat-2020.jpg",
+                uri: image,
               }}
+              onError={(event)=>handleImageErr(event)}
             />
           </View>
-          <View>
+          <View style={{width:"70%"}}>
             <Text style={styles.title}>{doctor.name}</Text>
             <View
-              style={{ flexDirection: "row", alignItems: "center", gap: 4 }}
+              style={{ flexDirection: "row", alignItems: "center", gap: 4, maxWidth:'90%'}}
             >
               <FontAwesome5
                 name="briefcase-medical"
@@ -50,7 +58,7 @@ const CardDoctor = ({ doctor }) => {
               <Text style={styles.content}>{specialties}</Text>
             </View>
             <View
-              style={{ flexDirection: "row", alignItems: "center", gap: 4 }}
+              style={{ flexDirection: "row", alignItems: "center", gap: 4 ,maxWidth:'90%' }}
             >
               <Octicons name="location" size={13} color={COLORS.gray} />
 
@@ -61,7 +69,10 @@ const CardDoctor = ({ doctor }) => {
             >
               <FontAwesome5 name="money-bill" size={13} color={COLORS.blue} />
 
-              <Text style={styles.content}>{doctor.price}</Text>
+              <Text style={styles.content}>{parseFloat(doctor.price).toLocaleString("vi-VN", {
+                style: "currency",
+                currency: "VND",
+              })}</Text>
             </View>
             <View
               style={{ flexDirection: "row", alignItems: "center", gap: 6 }}
@@ -136,5 +147,6 @@ const styles = StyleSheet.create({
     textAlign: "left",
     color: COLORS.gray,
     fontSize: 13,
+    
   },
 });

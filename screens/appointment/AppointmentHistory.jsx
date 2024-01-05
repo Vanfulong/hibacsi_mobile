@@ -2,7 +2,7 @@ import { View, Text, TouchableWithoutFeedback } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import reusable from "../../components/reusable/reusable.style";
-import { Appbar } from "react-native-paper";
+import { ActivityIndicator, Appbar } from "react-native-paper";
 import { StyleSheet } from "react-native";
 import { COLORS, SIZES } from "../../constants/theme";
 import axiosClients from "../../helper/axiosClients";
@@ -15,13 +15,23 @@ const AppointmentHistory = ({ navigation }) => {
   const [data, setData] = useState(null)
   const [appointments, setAppointments] = useState([]);
   const [tab, setTab] = useState('not_confirm');
+  const [loading, setLoading] = useState(false);
+  const [reload, setReload] = useState(1)
   const fetchData = async () => {
-    const results = await axiosClients.get("/appointmentsbyuser");
-    setAppointments(()=>results[tab]);
-    setData(results)
+    try {
+      setLoading(true);
+      const results = await axiosClients.get("/appointmentsbyuser/");
+      setAppointments(results[tab]);
+      setData(results)
+      setLoading(false);
+    }catch(e){
+      console.log(e)
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
+    
     fetchData();
   }, []);
   useEffect(()=>{
@@ -29,18 +39,17 @@ const AppointmentHistory = ({ navigation }) => {
       setAppointments(data[tab])
     }
   },[tab])
-  
+  useEffect(()=>{
+    fetchData();
+  },[reload])
   const cancleAppointment = (appointment)=> {
     axiosClients.post(`statusappointment/${appointment.id}/`, {
       'status': 2
     }).then(()=>{
       fetchData();
-      console.log(' test   dfsa')
     }).catch(()=>{
-      console.log(first)
-    })
 
-    console.log(appointment)
+    })
   }
   
   return (
@@ -68,12 +77,12 @@ const AppointmentHistory = ({ navigation }) => {
         </TouchableWithoutFeedback>
         <TouchableWithoutFeedback onPress={()=>setTab('coming')}>
           <View style={[styles.tab, tab=='coming'? styles.tabActive : '']}>
-            <Text style={[styles.textTab]}>Chờ xác nhận</Text>
+            <Text style={[styles.textTab]}>Sắp đến</Text>
           </View>
         </TouchableWithoutFeedback>
         <TouchableWithoutFeedback onPress={()=>setTab('confirmed')}  >
           <View style={[styles.tab, tab=='confirmed'? styles.tabActive : '']}>
-            <Text style={[styles.textTab]}>Chờ xác nhận</Text>
+            <Text style={[styles.textTab]}>Đã hoàn thành</Text>
           </View>
         </TouchableWithoutFeedback>
       </View>
@@ -83,10 +92,22 @@ const AppointmentHistory = ({ navigation }) => {
         showsVerticalScrollIndicator={false}
         style={{ backgroundColor: "white" }}
       >
+        {
+
+        loading ? (
+            <View style={styles.loading}>
+              <ActivityIndicator
+                animating={true}
+                color={COLORS.blue}
+                size={50}
+              />
+            </View>
+          ) : ''
+        }
         {appointments.length > 0
           ? appointments.map((appointment) => (
               <View key={appointment.id} >
-                <CardAppointment appointment={appointment} status={tab} action={cancleAppointment}/>
+                <CardAppointment appointment={appointment} status={tab} action={cancleAppointment} reload={setReload}/>
                 <HeightSpacer height={20} />
               </View>
             ))
@@ -114,7 +135,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderBottomWidth: 2,
-    borderBottomColor: "transparent",
+    borderBottomColor: COLORS.lightGrey,
     paddingVertical: 10,
     flex: 1,
   },
@@ -124,6 +145,13 @@ const styles = StyleSheet.create({
   },
   tabActive:{
     borderBottomColor: COLORS.blue,
-    backgroundColor: COLORS.lightBlue
-  }
+    backgroundColor: COLORS.lightBlue,
+    borderTopRightRadius:10,
+    borderTopLeftRadius:10
+  },
+  loading: {
+    alignItems: "center",
+    justifyContent: "center",
+    height: "100%",
+  },
 });

@@ -1,10 +1,13 @@
-import { View, Text, VirtualizedList } from "react-native";
+import { View, Text, VirtualizedList, StyleSheet } from "react-native";
 import React from "react";
 import HeightSpacer from "../reusable/HeightSpacer";
-import { SIZES } from "../../constants/theme";
-import name from "../tiles/card-category/CardCategory";
-import CardCategory from '../card/CardCategory'
+import { COLORS, SIZES } from "../../constants/theme";
+import { TouchableOpacity } from "react-native";
+import { FontAwesome5 } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import { Image } from "react-native";
 const Category = () => {
+  const navigation = useNavigation();
   const countries = [
     {
       _id: "64c62bfc65af9f8c969a8d04",
@@ -27,7 +30,7 @@ const Category = () => {
     {
       _id: "64cf2c935d14628d0ac0a2b9",
       name: "Lịch sử đặt hẹn",
-      screen: "AppointmentHistory"
+      screen: "AppointmentHistory",
     },
     {
       _id: "64cf2d095d14628d0ac0a2bd",
@@ -48,16 +51,90 @@ const Category = () => {
       region: "East Asia, China",
     },
   ];
+
+  const iconBMI = require("../../assets/images/3373123.png");
+  const iconTool = require("../../assets/images/medical-app.png");
+  const iconSchedule = require("../../assets/images/schedule.png");
   return (
     <View>
-      <View style={{flexDirection: 'row', flexWrap:'wrap', justifyContent:'space-between'}}>
-        {countries.map((category) => (
-            <CardCategory key={category._id} category={category} />
-     
-        ))}
+      <View
+        style={{
+          flexDirection: "row",
+          flexWrap: "wrap",
+          justifyContent: "space-between",
+        }}
+      >
+        <View style={styles.container}>
+          <TouchableOpacity onPress={() => navigation.navigate("AppointmentHistory")}>
+            <View>
+              <View style={styles.containerImg}>
+                {/* <FontAwesome5
+                  name="calendar-alt"
+                  size={32}
+                  color={COLORS.blue}
+                /> */}
+                <Image style={{width:32, height:32}} source={iconSchedule}  />
+
+              </View>
+              <Text style={styles.title}>Lịch sử đặt hẹn</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.container}>
+          <TouchableOpacity onPress={() => navigation.navigate("Bmi")}>
+            <View>
+              <View style={styles.containerImg}>
+                <Image style={{width:32, height:32}} source={iconTool}  />
+              </View>
+              <Text style={styles.title}>Công cụ sức khỏe</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.container}>
+          <TouchableOpacity onPress={() => navigation.navigate("")}>
+            <View>
+              <View style={styles.containerImg}>
+                {/* <Image style={styles.image} source={{ uri: category.image }} /> */}
+              </View>
+              <Text style={styles.title}>Lịch sử đặt hẹn</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.container}>
+          <TouchableOpacity onPress={() => navigation.navigate("")}>
+            <View>
+              <View style={styles.containerImg}>
+                {/* <Image style={styles.image} source={{ uri: category.image }} /> */}
+              </View>
+              <Text style={styles.title}>Lịch sử đặt hẹn</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
 };
 
 export default Category;
+
+const styles = StyleSheet.create({
+  container: {
+    width: "18%",
+  },
+  containerImg: {
+    width: "100%",
+    height: 60,
+    alignItems: "center", 
+    justifyContent: "center",
+  },
+  image: {
+    width: "80%",
+    height: "100%",
+    objectFit: "contain",
+  },
+  title: {
+    fontSize: SIZES.small,
+    fontFamily: "regular",
+    textAlign: "center",
+  },
+});

@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Alert, StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { COLORS, SIZES } from "../../constants/theme";
@@ -22,12 +22,20 @@ const Login = ({ navigation }) => {
   const [secure, setSecure] = useState(true);
   const [loading, setLoading] = useState(false)
   const handleLogin = async(values) => {
-    setLoading(true)
-    const result = await onLogin(values.username, values.password)
-    if(result.error){
+    try {
+      setLoading(true)
+      const result = await onLogin(values.username, values.password)
+
+      if(result.error){
+        setLoading(false)
+        console.log("ERROR", result.msg)
+        Alert.alert("", 'Sai tài khoản hoặc mật khẩu')
+      }
+    } catch (error) {
       setLoading(false)
-      console.log("ERROR", result.msg)
+      Alert.alert("", 'Sai tài khoản hoặc mật khẩu')
     }
+    
   };
   return (
     <SafeAreaView style={reusable.container}>

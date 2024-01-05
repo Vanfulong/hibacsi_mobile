@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
-import { Appbar, Avatar, Divider } from "react-native-paper";
+import { ActivityIndicator, Appbar, Avatar, Divider } from "react-native-paper";
 import { COLORS, SIZES } from "../../constants/theme";
 import { SafeAreaView } from "react-native-safe-area-context";
 import reusable from "../../components/reusable/reusable.style";
@@ -20,12 +20,14 @@ import genListDate from "../../helper/genListDate";
 import { TouchableWithoutFeedback } from "react-native";
 import { ScrollView } from "react-native";
 import axiosClients from "../../helper/axiosClients";
+import { Image } from "react-native";
 
 const Appointment = ({ navigation, route }) => {
   const doctor = route.params.doctor;
   if (!doctor) {
     navigation.goBack();
   }
+  const [image, setImage] = useState(doctor.account.avatar)
   const [listDate, setListDate] = useState([]);
   const [day, setDay] = useState({});
   const [pOfday, setPOfDay] = useState("morning");
@@ -34,15 +36,20 @@ const Appointment = ({ navigation, route }) => {
   const [time, setTime] = useState();
   const [openModal, setOpenModal] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [loadingData, setLoadingData] = useState(false);
   const [notify, setNotify] = useState({
     status: false,
     type: "",
     message: "",
   });
   useEffect(() => {
+    setLoadingData(true);
     setListDate(genListDate());
-    axiosClients.get("/schedulerdoctor?doctor=2").then((res) => {
+    axiosClients.get(`/getschedulerdoctor/?doctor=${doctor.id}`).then((res) => {
       setSchedulerDoctor(res);
+      setLoadingData(false);
+    }).catch(()=>{
+      setLoadingData(false);
     });
   }, []);
 
@@ -51,7 +58,6 @@ const Appointment = ({ navigation, route }) => {
       setDay(listDate[0] || null);
     }
   }, [listDate]);
-
   useEffect(() => {
     if (schedulerDoctor.morning) {
       let tempData = schedulerDoctor[pOfday].filter(
@@ -62,11 +68,13 @@ const Appointment = ({ navigation, route }) => {
   }, [day, pOfday, schedulerDoctor]);
   let specialties;
   if (doctor.specialties.length > 1) {
-    specialties = doctor.specialties.map(function (specialty) {
-      return specialty.specialty.name;
-    }).join(', ');
+    specialties = doctor.specialties
+      .map(function (specialty) {
+        return specialty.specialty.name;
+      })
+      .join(", ");
   } else {
-    specialties = data.specialties[0].specialty.name;
+    specialties = doctor.specialties[0].specialty.name;
   }
   function convertDateFormat(inputDate) {
     var parts = inputDate.split("/");
@@ -77,6 +85,7 @@ const Appointment = ({ navigation, route }) => {
 
     return newFormatDate;
   }
+  console.log(filterScheduler);
   const bookingDocter = () => {
     const data = {
       id_doctor: doctor.id,
@@ -108,10 +117,16 @@ const Appointment = ({ navigation, route }) => {
         });
       });
   };
+  const handleImageErr = () => {
+    console.log("first");
+    setImage(
+      "https://www.fvhospital.com/wp-content/uploads/2018/03/dr-vo-trieu-dat-2020.jpg"
+    );
+  };
   return (
     <>
       <SafeAreaView style={reusable.container}>
-        {loading ? <LoadingModal text={""} /> : ""}
+        {loadingData ? <LoadingModal text={""} /> : ""}
         <Appbar.Header
           style={{
             backgroundColor: "transparent",
@@ -128,11 +143,20 @@ const Appointment = ({ navigation, route }) => {
         </Appbar.Header>
         <HeightSpacer height={20} />
         <View style={styles.containerDoctor}>
-          <Avatar.Text size={80} label="XD" />
-          <View style={{ justifyContent: "center" }}>
+          {/* <Avatar.Text size={80} label="XD" /> */}
+          <View style={styles.containerImg}>
+            <Image
+              style={styles.imageDoctor}
+              source={{
+                uri: image,
+              }}
+              onError={(event)=>handleImageErr(event)}
+            />
+          </View>
+          <View style={{ justifyContent: "center", width:"70%" }}>
             <Text style={styles.textTitle}>{doctor.name}</Text>
             <HeightSpacer height={6} />
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <View style={{ flexDirection: "row", alignItems: "center", width:"90%" }}>
               <MaterialIcons name="badge" size={16} color={COLORS.blue} />
               <Text style={styles.textDes}>Chuyên khoa: {specialties}</Text>
             </View>
@@ -143,10 +167,13 @@ const Appointment = ({ navigation, route }) => {
                 size={16}
                 color={COLORS.green}
               />
-              <Text style={styles.textDes}>Phí khám cố định: {parseFloat(doctor.price).toLocaleString("vi-VN", {
-                style: "currency",
-                currency: "VND",
-              })}</Text>
+              <Text style={styles.textDes}>
+                Phí khám cố định:{" "}
+                {parseFloat(doctor.price).toLocaleString("vi-VN", {
+                  style: "currency",
+                  currency: "VND",
+                })}
+              </Text>
             </View>
           </View>
         </View>
@@ -213,7 +240,17 @@ const Appointment = ({ navigation, route }) => {
             </TouchableWithoutFeedback>
           </View>
           <HeightSpacer height={10} />
-
+          {loading ? (
+            <View style={styles.loading}>
+              <ActivityIndicator
+                animating={true}
+                color={COLORS.blue}
+                size={50}
+              />
+            </View>
+          ) : (
+            ""
+          )}
           {filterScheduler.length > 0 ? (
             <FlatList
               data={filterScheduler}
@@ -222,7 +259,7 @@ const Appointment = ({ navigation, route }) => {
                   <ButtonTime setTime={setTime} item={item} active={time} />
                 </View>
               )}
-              keyExtractor={(item) => item.id.toString()}
+              keyExtractor={(item) => item.id}
               numColumns={3}
               contentContainerStyle={{ gap: 10 }}
             />
@@ -342,5 +379,15 @@ const styles = StyleSheet.create({
   textTab: {
     fontSize: SIZES.xmedium,
     fontFamily: "regular",
+  },
+  imageDoctor: {
+    width: "100%",
+    height: "100%",
+    objectFit: "contain",
+    borderRadius: 10,
+  },
+  containerImg: {
+    width: "30%",
+    height: 100,
   },
 });

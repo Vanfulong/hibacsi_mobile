@@ -9,7 +9,12 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center'
-  }
+  },
+  loading: {
+    alignItems: "center",
+    justifyContent: "center",
+    height: "100%",
+  },
 });
 
 export default styles;

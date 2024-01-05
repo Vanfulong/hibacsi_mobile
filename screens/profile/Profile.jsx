@@ -1,18 +1,25 @@
-import { View, Text, StyleSheet, ScrollView } from 'react-native'
+import { View, Text, StyleSheet, ScrollView ,Image} from 'react-native'
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Avatar, Divider } from 'react-native-paper'
 import { HeightSpacer, RowSetting } from '../../components'
 import { COLORS, SIZES } from '../../constants/theme'
 import { useAuth } from '../../context/AuthContext'
+import { API_URL } from '@env';
+
 const Profile = () => {
-  const { onLogout } = useAuth()
+  const { onLogout, currentUser } = useAuth()
   return (
     <SafeAreaView>
       <View style={styles.containerHeader}>
-        <Avatar.Text size={80} label="XD" />
+        {
+           currentUser.account.avatar?
+           <Image style={{ width: 130, height: 130 , borderRadius:80}} src={`${API_URL}${currentUser.account.avatar}`} />
+             :
+             <Avatar.Text size={80} label="XD" />
+        }
         <HeightSpacer height={20}/>
-        <Text style={styles.name}>Văn Phú Long</Text>
+        <Text style={styles.name}>{currentUser.name}</Text>
       </View>
       <HeightSpacer height={30}/>
       <ScrollView nestedScrollEnabled showsVerticalScrollIndicator={false}>
@@ -20,11 +27,11 @@ const Profile = () => {
 
         <RowSetting icon={'user'} text={'Thông tin tài khoản'} navigationTo={'ProfileDetail'}/>
         <Divider/>
-        <RowSetting icon={'setting'} text={'Cài đặt'} navigationTo={'ProfileDetail'}/>
+        <RowSetting icon={'setting'} text={'Cài đặt'} navigationTo={'Setting'}/>
         <Divider/>
-        <RowSetting icon={'infocirlceo'} text={'Trung tâm trợ giúp'} navigationTo={'ProfileDetail'}/>
+        <RowSetting icon={'infocirlceo'} text={'Trung tâm trợ giúp'} navigationTo={'PrivacyPolicy'}/>
         <Divider/>
-        <RowSetting icon={'lock'} text={'Chính sách bảo mật'} navigationTo={'ProfileDetail'}/>
+        <RowSetting icon={'lock'} text={'Chính sách bảo mật'} navigationTo={'PrivacyPolicy'}/>
         <Divider/>
         <RowSetting icon={'logout'} text={'Đăng xuất'} onPress={()=>onLogout()} />
         <Divider/>

@@ -15,7 +15,10 @@ export default function LoadingModal(props) {
           {props.task ? (
             <Text style={styles.modalText}>{props.task}</Text>
           ) : (
-            <Text style={styles.modalText}>{props.text || ''}</Text>
+           
+              props.text &&
+              <Text style={styles.modalText}>{props.text || ''}</Text>
+           
           )}
         </View>
       </View>

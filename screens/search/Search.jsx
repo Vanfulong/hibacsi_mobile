@@ -93,7 +93,7 @@ const Search = ({ navigation }) => {
 
           <HeightSpacer height={10} />
           {/* filter component */}
-          <ScrollView
+          {/* <ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={{ gap: 10 }}
@@ -136,7 +136,7 @@ const Search = ({ navigation }) => {
                 ""
               )}
             </View>
-          </ScrollView>
+          </ScrollView> */}
           {/* end filter */}
 
           <HeightSpacer height={20} />
@@ -158,18 +158,18 @@ const Search = ({ navigation }) => {
                       <View style={styles.containerTitle}>
                         <Text style={styles.title}>Bác sĩ</Text>
                         <View style={styles.rightTitle}>
-                          <Text style={styles.textRightTitle}>Xem tất cả</Text>
-                          <AntDesign
+                          <Text style={styles.textRightTitle}> </Text>
+                          {/* <AntDesign
                             name="right"
                             size={12}
                             color={COLORS.dark}
-                          />
+                          /> */}
                         </View>
                       </View>
                       <HeightSpacer height={6} />
                       {data.doctor
-                        ? data.doctor["results"].map((doctor) => (
-                            <CardDoctor doctor={doctor} />
+                        ? data.doctor["results"].map((doctor, index) => (
+                            <CardDoctor key={index} doctor={doctor} />
                           ))
                         : ""}
                       <HeightSpacer height={8} />
@@ -184,18 +184,18 @@ const Search = ({ navigation }) => {
                       <View style={styles.containerTitle}>
                         <Text style={styles.title}>Bệnh viện</Text>
                         <View style={styles.rightTitle}>
-                          <Text style={styles.textRightTitle}>Xem tất cả</Text>
-                          <AntDesign
+                          <Text style={styles.textRightTitle}> </Text>
+                          {/* <AntDesign
                             name="right"
                             size={12}
                             color={COLORS.dark}
-                          />
+                          /> */}
                         </View>
                       </View>
                       <HeightSpacer height={6} />
                       {data.hospital
-                        ? data.hospital["results"].map((hospital) => (
-                            <CardHospital Hospital={hospital} />
+                        ? data.hospital["results"].map((hospital,index) => (
+                            <CardHospital key={index} Hospital={hospital} />
                           ))
                         : ""}
                       <HeightSpacer height={8} />

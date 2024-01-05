@@ -1,27 +1,27 @@
 import { View, Text, VirtualizedList, FlatList } from "react-native";
 import React, { useEffect, useState } from "react";
-import CardDoctor from "../card/CardDoctor";
+import CardHospital from "../card/CardHospital";
 import HeightSpacer from "../reusable/HeightSpacer";
 import { COLORS, SHADOWS, SIZES } from "../../constants/theme";
 import ReusableText from "../reusable/ReusableText";
 import { Button, Card } from "react-native-paper";
 import { StyleSheet } from "react-native";
 import axiosClients from "../../helper/axiosClients";
-const DoctorHot = ({listDoctor}) => {
+const Hospital = ({listHospital}) => {
   
   return (
     <View>
       <HeightSpacer height={SIZES.xLarge} />
       <ReusableText
-        text={"Bác sĩ nổi bật"}
+        text={"Bệnh viện nổi bật"}
         family={"bold"}
         size={SIZES.medium}
         color={COLORS.black}
       />
       {
-        listDoctor.length==0?'':listDoctor.map((doctor) => (
-          <View key={doctor.id} style={styles.container}>
-            <CardDoctor doctor={doctor} />
+        listHospital.length==0?'':listHospital.map((Hospital) => (
+          <View key={Hospital.id} style={styles.container}>
+            <CardHospital Hospital={Hospital} />
           </View>
         ))
       }
@@ -30,7 +30,7 @@ const DoctorHot = ({listDoctor}) => {
   );
 };
 
-export default DoctorHot;
+export default Hospital;
 const styles = StyleSheet.create({
   
 });

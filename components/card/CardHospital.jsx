@@ -1,17 +1,19 @@
 import { StyleSheet, TouchableWithoutFeedback, View } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { COLORS, SIZES } from "../../constants/theme";
-import { FontAwesome5, Octicons } from "@expo/vector-icons";
+import {  Octicons } from "@expo/vector-icons";
 import { Image } from "react-native";
 import { Text } from "react-native";
-import { Button } from "react-native-paper";
-import { Rating, AirbnbRating } from "react-native-ratings";
 import { useNavigation } from "@react-navigation/native";
 const CardHospital = ({ Hospital }) => {
+  const [image, setImage] = useState(Hospital.account.avatar || "https://www.fvhospital.com/wp-content/uploads/2018/03/dr-vo-trieu-dat-2020.jpg")
   
   const navigation = useNavigation();
-  let specialties = ""
-  
+  const handleImageErr = () => {
+    setImage(
+      "https://www.fvhospital.com/wp-content/uploads/2018/03/dr-vo-trieu-dat-2020.jpg"
+    );
+  };
   return (
     <View style={styles.container}>
       <TouchableWithoutFeedback onPress={() => navigation.navigate("HospitalDetail",{Hospital})}>
@@ -20,15 +22,19 @@ const CardHospital = ({ Hospital }) => {
             <Image
               style={styles.imageHospital}
               source={{
-                uri: "https://www.fvhospital.com/wp-content/uploads/2018/03/dr-vo-trieu-dat-2020.jpg",
+                uri: image,
               }}
+              onError={(event)=> handleImageErr(event)}
             />
           </View>
-          <View>
+          <View style={{justifyContent:'center', gap:5, width:"80%" }}>
+            <View style={{maxWidth:'90%'}}>
+
             <Text style={styles.title}>{Hospital.name}</Text>
+            </View>
               
             <View
-              style={{ flexDirection: "row", alignItems: "center", gap: 4 }}
+              style={{ flexDirection: "row", alignItems: "center", gap: 4, maxWidth:'90%' }}
             >
               <Octicons name="location" size={13} color={COLORS.gray} />
 

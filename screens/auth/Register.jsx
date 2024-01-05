@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Alert, StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { COLORS, SIZES } from "../../constants/theme";
@@ -10,36 +10,60 @@ import { HeightSpacer, LoadingModal, ReusableText } from "../../components";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { TouchableWithoutFeedback } from "react-native";
+import axiosClients from "../../helper/axiosClients";
 const SignupSchema = Yup.object().shape({
   password: Yup.string()
     .min(2, "Too Short!")
     .max(70, "Too Long!")
     .required("Required"),
   email: Yup.string().email("Invalid email").required("Required"),
+  username: Yup.string().min(2, "Too Short").required("Requi"),
+  repeatPassword: Yup.string()
+    .oneOf([Yup.ref("password"), null], "Passwords must match")
+    .required("Required"),
 });
 const Login = ({ navigation }) => {
   const { onRegister } = useAuth();
   const [secure, setSecure] = useState(true);
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
 
-  const handleRegister = () => {
-    // setAuthState({ token: "", authenticated: true });
-    setLoading(true)
-    // .....
-    setLoading(false)
+  const handleRegister = async (values) => {
+    try {
+      setLoading(true);
+      await axiosClients.post("/auth/register/user/", {
+        email: values.email,
+        password: values.password,
+        username: values.username,
+      }).then(()=>{
+      setLoading(false);
+      navigation.navigate("Login");
+
+      }).catch((err)=>{
+      setLoading(false);
+
+        console.log(err)
+      })
 
 
+    } catch (error) {
+      console.log(error)
+      setLoading(false);
+      Alert.alert("", "Đăng kí tài khoản thất bại. Vui lòng thử lại");
+    }
   };
   return (
     <SafeAreaView style={reusable.container}>
-      {
-        loading?<LoadingModal/>:''
-      }
+      {loading ? <LoadingModal /> : ""}
       <View style={styles.container}>
         <Formik
-          initialValues={{ username:"",email: "", password: "", rePassword: "" }}
+          initialValues={{
+            username: "",
+            email: "",
+            password: "",
+            repeatPassword: "",
+          }}
           validationSchema={SignupSchema}
-          onSubmit={(values) => console.log(values)}
+          onSubmit={(values) => handleRegister(values)}
           validateOnChange={false}
           validateOnBlur={false}
         >
@@ -75,7 +99,7 @@ const Login = ({ navigation }) => {
                   mode="outlined"
                   activeOutlineColor={COLORS.blue}
                   style={{
-                    backgroundColor:'white'
+                    backgroundColor: "white",
                   }}
                 />
                 <Text style={styles.errorMessage}>{errors.username}</Text>
@@ -94,7 +118,7 @@ const Login = ({ navigation }) => {
                   mode="outlined"
                   activeOutlineColor={COLORS.blue}
                   style={{
-                    backgroundColor:'white'
+                    backgroundColor: "white",
                   }}
                 />
                 <Text style={styles.errorMessage}>{errors.email}</Text>
@@ -118,7 +142,7 @@ const Login = ({ navigation }) => {
                   }
                   activeOutlineColor={COLORS.blue}
                   style={{
-                    backgroundColor:'white'
+                    backgroundColor: "white",
                   }}
                 />
                 <Text style={styles.errorMessage}>{errors.password}</Text>
@@ -127,9 +151,9 @@ const Login = ({ navigation }) => {
                 <TextInput
                   label="Nhập lại mật khẩu"
                   returnKeyType="done"
-                  value={values.rePassword}
-                  onChangeText={handleChange("rePassword")}
-                  error={!!errors.rePassword}
+                  value={values.repeatPassword}
+                  onChangeText={handleChange("repeatPassword")}
+                  error={!!errors.repeatPassword}
                   secureTextEntry={secure}
                   underlineColor="transparent"
                   mode="outlined"
@@ -142,10 +166,10 @@ const Login = ({ navigation }) => {
                   }
                   activeOutlineColor={COLORS.blue}
                   style={{
-                    backgroundColor:'white'
+                    backgroundColor: "white",
                   }}
                 />
-                <Text style={styles.errorMessage}>{errors.rePassword}</Text>
+                <Text style={styles.errorMessage}>{errors.repeatPassword}</Text>
               </View>
               <HeightSpacer height={30} />
 
@@ -159,11 +183,21 @@ const Login = ({ navigation }) => {
             </View>
           )}
         </Formik>
-        <HeightSpacer height={30}/>
-        <View style={{flexDirection:'row', alignContent:'center', justifyContent:'center'}}>
+        <HeightSpacer height={30} />
+        <View
+          style={{
+            flexDirection: "row",
+            alignContent: "center",
+            justifyContent: "center",
+          }}
+        >
           <Text style={{}}>Đã có tài khoản?</Text>
-          <TouchableWithoutFeedback onPress={()=> navigation.navigate('Login')}>
-            <Text style={{marginLeft:10, color:COLORS.blue}}>Đăng nhập</Text>
+          <TouchableWithoutFeedback
+            onPress={() => navigation.navigate("Login")}
+          >
+            <Text style={{ marginLeft: 10, color: COLORS.blue }}>
+              Đăng nhập
+            </Text>
           </TouchableWithoutFeedback>
         </View>
       </View>

@@ -11,6 +11,15 @@ import DoctorDetail from "./detail/DoctorDetail";
 import ProfileDetail from "./detail/ProfileDetail";
 import Appointment from "./appointment/Appointment";
 import AppointmentHistory from "./appointment/AppointmentHistory";
+import Setting from "./profile/Setting";
+import ChangePassword from "./auth/ChangePassword";
+import PrivacyPolicy from "./PrivacyPolicy";
+import Bmi from "./tool/Bmi";
+import HospitalDetail from "./detail/HospitalDetail";
+import Blog from "./blog/Blog";
+import CategoryDetail from "./category/CategoryDetail";
+import Chat from "./chat/Chat";
+import Chatting from "./chat/Chatting";
 export {
   Onboarding,
   Knowledge,
@@ -24,5 +33,14 @@ export {
   DoctorDetail,
   ProfileDetail,
   Appointment,
-  AppointmentHistory
+  AppointmentHistory,
+  Setting,
+  ChangePassword,
+  PrivacyPolicy,
+  Bmi,
+  HospitalDetail,
+  Blog,
+  CategoryDetail,
+  Chat,
+  Chatting
 };

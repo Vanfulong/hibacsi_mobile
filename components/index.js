@@ -1,4 +1,4 @@
-import Slides from "./onboard/Slides";
+
 import ReusableText from "./reusable/ReusableText";
 import ReusableButton from "./button/ReusableButton";
 import HeightSpacer from "./reusable/HeightSpacer";
@@ -17,8 +17,8 @@ import Notify from "./modal/Notify";
 import ModalChooseCity from "./modal/ModalChooseCity";
 import CardHospital from "./card/CardHospital";
 import CardAppointment from "./card/CardAppointment";
+import Hospital from "./home/Hospital";
 export {
-  Slides,
   ReusableText,
   ReusableButton,
   HeightSpacer,
@@ -36,5 +36,6 @@ export {
   Notify,
   ModalChooseCity,
   CardHospital,
-  CardAppointment
+  CardAppointment,
+  Hospital
 };

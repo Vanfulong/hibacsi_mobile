@@ -1,5 +1,6 @@
 {
   "expo": {
+
     "name": "hibacsi",
     "slug": "hibacsi",
     "version": "1.0.0",
@@ -11,7 +12,12 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    
+    "androidStatusBar": {
+      "backgroundColor": "#ffffff",
+      "barStyle": "dark-content",
+      "translucent": true,
+      "hidden": false
+    },
     "assetBundlePatterns": [
       "**/*"
     ],
@@ -32,6 +38,14 @@
       "eas": {
         "projectId": "54b507bc-457e-4ab2-af5a-e0ab637021e1"
       }
-    }
+    },
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to let you share them with your friends."
+        }
+      ]
+    ]
   }
 }
